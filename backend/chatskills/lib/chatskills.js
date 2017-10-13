@@ -1,12 +1,3 @@
-/*
-Build a chatbot using Alexa-style skills and intents.
-
-Copyright (c) 2017 Kory Becker
-http://primaryobjects.com/kory-becker
-
-License MIT
-*/
-
 var alexa = require('alexa-app');
 
 function ReqResHelper(namespace, sessionId) {
@@ -45,50 +36,50 @@ function ReqResHelper(namespace, sessionId) {
 };
 
 var DateTimeEncoder = {
-  dates: {},
-  times: {},
-  dateRegEx: /(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2}/, // http://stackoverflow.com/a/29648721/2596404
-  timeRegEx: /([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/, // http://stackoverflow.com/a/7536768/2596404
+    dates: {},
+    times: {},
+    dateRegEx: /(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2}/, // http://stackoverflow.com/a/29648721/2596404
+    timeRegEx: /([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/, // http://stackoverflow.com/a/7536768/2596404
 
-  encode: function(text) {
-    text = DateTimeEncoder.encodeDateTime(text, true);
-    text = DateTimeEncoder.encodeDateTime(text, false);
+    encode: function(text) {
+        text = DateTimeEncoder.encodeDateTime(text, true);
+        text = DateTimeEncoder.encodeDateTime(text, false);
 
-    return text;
-  },
+        return text;
+    },
 
-  decode: function(text) {
-    text = DateTimeEncoder.decodeDateTime(text, true);
-    text = DateTimeEncoder.decodeDateTime(text, false);
+    decode: function(text) {
+        text = DateTimeEncoder.decodeDateTime(text, true);
+        text = DateTimeEncoder.decodeDateTime(text, false);
 
-    return text;
-  },
+        return text;
+    },
 
-  encodeDateTime: function(text, isDate) {
-    // Replace dates and times with temporary placeholder for regEx split.
-    var hash = isDate ? DateTimeEncoder.dates : DateTimeEncoder.times;
+    encodeDateTime: function(text, isDate) {
+        // Replace dates and times with temporary placeholder for regEx split.
+        var hash = isDate ? DateTimeEncoder.dates : DateTimeEncoder.times;
 
-    var match;
-    while (match = text.match(isDate ? DateTimeEncoder.dateRegEx : DateTimeEncoder.timeRegEx)) {
-      var key = (isDate ? '___DATE' : '___TIME') + (Object.keys(hash).length + 1);
-      text = text.replace(match[0], key + ' ');
-      hash[key] = match[0];
+        var match;
+        while (match = text.match(isDate ? DateTimeEncoder.dateRegEx : DateTimeEncoder.timeRegEx)) {
+            var key = (isDate ? '___DATE' : '___TIME') + (Object.keys(hash).length + 1);
+            text = text.replace(match[0], key + ' ');
+            hash[key] = match[0];
+        }
+
+        return text;
+    },
+
+    decodeDateTime: function(text, isDate) {
+        // Restore dates and times.
+        var hash = isDate ? DateTimeEncoder.dates : DateTimeEncoder.times;
+
+        var match = text.match(isDate ? /___DATE\d+/ : /___TIME\d+/);
+        if (match && match.length > 0) {
+            text = hash[match];
+        }
+
+        return text;
     }
-
-    return text;
-  },
-
-  decodeDateTime: function(text, isDate) {
-    // Restore dates and times.
-    var hash = isDate ? DateTimeEncoder.dates : DateTimeEncoder.times;
-
-    var match = text.match(isDate ? /___DATE\d+/ : /___TIME\d+/);
-    if (match && match.length > 0) {
-      text = hash[match];
-    }
-
-    return text;
-  }
 };
 
 var ChatSkillsManager = {
@@ -118,11 +109,9 @@ var ChatSkillsManager = {
         if (typeof namespace == 'string') {
             // Launch app.
             app = this.apps[namespace];
-        }
-        else if (namespace) {
+        } else if (namespace) {
             app = namespace;
-        }
-        else {
+        } else {
             if (this.verbose) {
                 console.log("Error: Please provide a namespace or app to chatskills.launch(namespace, sessionId). Example: chatskills.launch('myskill') or chatskills.launch(app)");
             }
@@ -134,7 +123,7 @@ var ChatSkillsManager = {
             if (app.launchFunc) {
                 // Run the skill's app.launch() method.
                 app.launchFunc(req, req);
-            }            
+            }
         }
     },
 
@@ -175,8 +164,7 @@ var ChatSkillsManager = {
                     console.log("Error: The skill '" + namespace + "' doesn't exist. Add one using: chatskills.add('" + namespace + "')");
                 }
                 return;
-            }
-            else {
+            } else {
                 // We've started a skill! Establish a new session.
                 session = this.sessions[sessionId] = {
                     id: sessionId,
@@ -190,15 +178,13 @@ var ChatSkillsManager = {
                     console.log('Session ' + sessionId + ' started.');
                 }
             }
-        }
-        else if (!session) {
+        } else if (!session) {
             // Not a request for our bot and no existing session.
             if (this.verbose) {
                 console.log("Info: Ignoring. Example request: '" + this.id + ", ask SKILL_NAME text'.");
             }
             return;
-        }
-        else {
+        } else {
             // Continue existing session.
             session.date = new Date();
             session.input = input;
@@ -257,8 +243,7 @@ var ChatSkillsManager = {
                     };
 
                     // Call intent.
-                    var continueSession = app.intents[key].handler(
-                    {
+                    var continueSession = app.intents[key].handler({
                         // Request
                         input: input,
                         slots: currentSession.slots,
@@ -279,8 +264,7 @@ var ChatSkillsManager = {
                         slot: function(key) {
                             return this.get(key);
                         }
-                    },
-                    {
+                    }, {
                         // Response
                         say: function(text) {
                             if (callback) {
@@ -333,8 +317,7 @@ var ChatSkillsManager = {
                     callback();
                 }
             }
-        }
-        else {
+        } else {
             if (callback) {
                 callback();
             }
@@ -381,7 +364,7 @@ var ChatSkillsManager = {
 
                             if ((tokenParts && tokenParts.length == 3) || (tokenParts2 && tokenParts2.length > 0)) {
                                 if (tokenParts2 && tokenParts2.length == 2) {
-                                  tokenParts = [tokenParts2[0], tokenParts2[1], tokenParts2[1]];
+                                    tokenParts = [tokenParts2[0], tokenParts2[1], tokenParts2[1]];
                                 }
 
                                 //console.log(tokenParts[2] + ' = ' + word);
@@ -394,89 +377,92 @@ var ChatSkillsManager = {
                                 var type = slots[name];
                                 switch (type) {
                                     case 'NUMBER':
-                                    case 'AMAZON.NUMBER': isValidType = (parseFloat(word) && isFinite(word)); break;
+                                    case 'AMAZON.NUMBER':
+                                        isValidType = (parseFloat(word) && isFinite(word));
+                                        break;
                                     case 'DATE':
-                                    case 'AMAZON.DATE': isValidType = word.match(DateTimeEncoder.dateRegEx); break;
+                                    case 'AMAZON.DATE':
+                                        isValidType = word.match(DateTimeEncoder.dateRegEx);
+                                        break;
                                     case 'TIME':
-                                    case 'AMAZON.TIME': isValidType = word.match(DateTimeEncoder.timeRegEx); break;
+                                    case 'AMAZON.TIME':
+                                        isValidType = word.match(DateTimeEncoder.timeRegEx);
+                                        break;
                                     case 'LITERAL':
-                                    case 'AMAZON.LITERAL': isValidType = true; break;
-                                    default: {
-                                      isValidType = false;
+                                    case 'AMAZON.LITERAL':
+                                        isValidType = true;
+                                        break;
+                                    default:
+                                        {
+                                            isValidType = false;
 
-                                      // Check if this is a custom slot type.
-                                      var variableParts = template.match(/\{(.+)\|(.+)\}/);
-                                      var variableParts2 = template.match(/\{(.+)\}/);
+                                            // Check if this is a custom slot type.
+                                            var variableParts = template.match(/\{(.+)\|(.+)\}/);
+                                            var variableParts2 = template.match(/\{(.+)\}/);
 
-                                      if ((!variableParts || variableParts.length != 3) && (variableParts2 && variableParts2.length == 2)) {
-                                          // This is a custom type with {-|CustomName}.
-                                          isValidType = true;
-                                      }
-                                      else if (variableParts && variableParts.length == 3) {
-                                        // This is a slot variable, check if the value exists in the dictionary.
-                                        if (dictionary) {
-                                          var utteranceValue = variableParts[1];
-                                          if (utteranceValue.toLowerCase() == word.toLowerCase()) {
-                                            // The spoken word matches this utterance.
-                                            for (var j in Object.keys(dictionary)) {
-                                              var key = Object.keys(dictionary)[j];
+                                            if ((!variableParts || variableParts.length != 3) && (variableParts2 && variableParts2.length == 2)) {
+                                                // This is a custom type with {-|CustomName}.
+                                                isValidType = true;
+                                            } else if (variableParts && variableParts.length == 3) {
+                                                // This is a slot variable, check if the value exists in the dictionary.
+                                                if (dictionary) {
+                                                    var utteranceValue = variableParts[1];
+                                                    if (utteranceValue.toLowerCase() == word.toLowerCase()) {
+                                                        // The spoken word matches this utterance.
+                                                        for (var j in Object.keys(dictionary)) {
+                                                            var key = Object.keys(dictionary)[j];
 
-                                              for (var dictionaryIndex in dictionary[key]) {
-                                                var dictionaryValue = dictionary[key][dictionaryIndex];
+                                                            for (var dictionaryIndex in dictionary[key]) {
+                                                                var dictionaryValue = dictionary[key][dictionaryIndex];
 
-                                                if (utteranceValue.toLowerCase() == dictionaryValue.toLowerCase()) {
-                                                  //console.log('Found ' + utteranceValue + ' == ' + dictionaryValue + ' in: ' + key);
-                                                  isValidType = true;
-                                                  break;
+                                                                if (utteranceValue.toLowerCase() == dictionaryValue.toLowerCase()) {
+                                                                    //console.log('Found ' + utteranceValue + ' == ' + dictionaryValue + ' in: ' + key);
+                                                                    isValidType = true;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if (isValidType) {
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
                                                 }
-                                              }
-
-                                              if (isValidType) {
-                                                break;
-                                              }
                                             }
-                                          }
                                         }
-                                      }
-                                    }
                                 };
 
                                 if (isValidType) {
                                     // It's a valid variable and type.
                                     result.pairs.push({ name: name, value: word });
-                                }
-                                else {
+                                } else {
                                     // It's a variable, but the type is wrong (ie., text supplied where a number should be, etc).
                                     result.isValid = false;
                                     break;
                                 }
-                            }
-                            else if (token && /^(\{.+\})$/.test(token)) {
+                            } else if (token && /^(\{.+\})$/.test(token)) {
                                 // token is a custom slot type {SomeType}.
                                 var name = token.substring(1, token.length - 1);
                                 if (slots[name]) {
                                     // This is a valid custom slot type.
                                     result.pairs.push({ name: name, value: word });
                                 }
-                            }                            
-                            else {
+                            } else {
                                 result.isValid = false;
                                 break;
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     result.isValid = false;
                     continue;
                 }
-            }
-            else {
+            } else {
                 result.isValid = false;
             }
 
             if (result.isValid) {
-                break;            
+                break;
             }
         };
 
