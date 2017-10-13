@@ -1,0 +1,56 @@
+{
+  "name": "chatskills",
+  "version": "0.0.20",
+  "description": "Run Alexa apps on the command-line. Run them in Slack. Run them anywhere! Supports Amazon Alexa skills and intents.",
+  "author": {
+    "name": "Kory Becker",
+    "email": "kbecker@primaryobjects.com",
+    "url": "http://www.primaryobjects.com/kory-becker"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/primaryobjects/chatskills.git"
+  },
+  "main": "./lib",
+  "dependencies": {
+    "readline-sync": "*",
+    "alexa-app": "^4.1.0"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "keywords": [
+    "alexa",
+    "amazon",
+    "amazon echo",
+    "intents",
+    "skills",
+    "chatskills",
+    "chat skills",
+    "chatbot",
+    "chat bot",
+    "chat-bot",
+    "natural language processing",
+    "nlp",
+    "slack",
+    "slack chatbot",
+    "slack bot",
+    "alexa-app",
+    "utterance",
+    "bot",
+    "chat",
+    "AI",
+    "artificial intelligence",
+    "conversational",
+    "conversation",
+    "conversational ui"
+  ],
+  "_id": "chatskills@0.0.20",
+  "_from": "chatskills"
+}
