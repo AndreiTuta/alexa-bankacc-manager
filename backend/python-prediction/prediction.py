@@ -2,7 +2,6 @@ from numpy import exp, array, random, dot
 
 import itertools
 
-
 class NeuralNetwork():
     def __init__(self):
         # Seed the random number generator, so it generates the same numbers
@@ -64,9 +63,15 @@ if __name__ == "__main__":
                     yield p
                 xs[low], xs[i] = xs[i], xs[low]
 
+    
 
     #Intialise a single neuron neural network.
     neural_network = NeuralNetwork()
+
+    e = list()
+    e.append(2034)
+    e.append(2432)
+    #btc[2]=[2034,2432]
 
     print "Random starting synaptic weights: "
     print neural_network.synaptic_weights
@@ -89,13 +94,32 @@ if __name__ == "__main__":
 
     print("\n");
 
-    # Test the neural network with a new situation.
-    print "Considering new situation [1, 0, 0] -> ?: "
-    x = neural_network.think(array([1, 0, 0]))
 
-    print x
+    if(e[0]>e[1]):
+        # Test the neural network with a new situation.
+        print "Considering new situation [0, 1, 0] -> ?: "
+        n = neural_network.think(array([0, 1, 0]))
+        print n
+    else: 
+        # Test the neural network with a new situation.
+        print "Considering new situation [0, 0, 1] -> ?: "
+        n = neural_network.think(array([0, 0, 1]))
+        print n
 
-    if(x>1): 
-        print True
-    else:
-        print False
+    if(n<1):
+        print "Time to invest"
+    else: 
+        print "Sit down..."
+
+#
+#   if(btc[0]>btc[1]):
+#      # Test the neural network with a new situation.
+#     print "Considering new situation [1, 0, 1] -> ?: "
+#     n = neural_network.think(array([1, 0, 1]))
+#     print n
+#     else : 
+#     Test the neural network with a new situation.
+#     print "Considering new situation [1, 1, 0] -> ?: "
+#     n = neural_network.think(array([1, 1, 0]))
+#    print n
+   
