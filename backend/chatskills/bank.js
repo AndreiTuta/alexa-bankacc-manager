@@ -6,8 +6,8 @@ var bank = chatskills.add('bank');
 var date = new Date(); //Date manipulation    
 
 //Reading from the text
-var x = parseInt('2423');
-var y = parseInt('2034')
+var x = parseInt('2423'); //passing the result of the Everis 
+var y = parseInt('2034') // API as Integers
 
 // Create intents.
 bank.intent('Balance', {
