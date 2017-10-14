@@ -3,9 +3,11 @@ var chatskills = require('./lib/chatskills');
 // Create a new skill.
 var bank = chatskills.add('bank');
 
-var x = Math.random(); //Random number until we implement Bloomberg
-
 var date = new Date(); //Date manipulation    
+
+//Reading from the text
+var x = parseInt('2423');
+var y = parseInt('2034')
 
 // Create intents.
 bank.intent('Balance', {
@@ -33,7 +35,7 @@ bank.intent('balance-yesterday', {
         if (state < 3) {
             req.set('state', state + 1);
             date.setDate(date.getDate() - 1);
-            res.say('Your balance on ' + (date.getDate()).toString() + '/' + (date.getMonth()).toString() + ' was ' + x);
+            res.say('Your balance on ' + (date.getDate()).toString() + '/' + (date.getMonth()).toString() + ' was ' + y);
         }
 
         return true;
