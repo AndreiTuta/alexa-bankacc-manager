@@ -25,48 +25,17 @@ bank.intent('Balance', {
 
 
 bank.intent('balance-yesterday', {
-            'slots': { 'STATE': 'NUMBER' },
-            'utterances': ['{for} {last| } balance']
-        },
-        function(req, res) {
-            var state = req.get('state') || 0;
-            if (state < 3) {
-                req.set('state', state + 1);
-                date.setDate(date.getDate() - 1);
-                res.say('Your balance on ' + (date.getDate().toString() + '/' + (date.getMonth()).toString() + ' was ' + x);
-                }
+        'slots': { 'STATE': 'NUMBER' },
+        'utterances': ['{for} {last| } balance']
+    },
+    function(req, res) {
+        var state = req.get('state') || 0;
+        if (state < 3) {
+            req.set('state', state + 1);
+            date.setDate(date.getDate() - 1);
+            res.say('Your balance on ' + (date.getDate()).toString() + '/' + (date.getMonth()).toString() + ' was ' + x);
+        }
 
-                return true;
-            }
-        );
-
-        bank.intent('Ethereum', {
-                'slots': { 'STATE': 'NUMBER' },
-                'utterances': ['{for} {the} {price} {of} ethereum']
-            },
-            function(req, res) {
-                var state = req.get('state') || 0;
-                if (state < 3) {
-                    req.set('state', state + 1);
-                    res.say('The price of ethereum is ' + x);
-                }
-
-                return true;
-            }
-        );
-
-
-        bank.intent('Bitcoins', {
-                'slots': { 'STATE': 'NUMBER' },
-                'utterances': ['{for} {the} {price} {of} bitcoins']
-            },
-            function(req, res) {
-                var state = req.get('state') || 0;
-                if (state < 3) {
-                    req.set('state', state + 1);
-                    res.say('The price of a bitcoin is ' + x);
-                }
-
-                return true;
-            }
-        );
+        return true;
+    }
+);
